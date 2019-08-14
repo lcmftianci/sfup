@@ -1,1 +1,0 @@
-/usr/bin/c++   -g -Wl,--rpath=./lib/ -m64 -Wall -o0 -g -ggdb -pthread -std=c++11 -fPIC -g    CMakeFiles/sfu_media.dir/sfu_media/src/main.cpp.o  -o ../out/sfu_media  -L/root/sfup/lib  -L/usr/local/lib -rdynamic ../out/libsfu_core.so ../out/liblog4z.so -lpthread -Wl,-rpath,/root/sfup/lib:/usr/local/lib:/root/sfup/out 

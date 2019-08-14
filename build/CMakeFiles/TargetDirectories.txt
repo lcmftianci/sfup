@@ -1,4 +1,0 @@
-/root/sfup/build/third_party/log4z/CMakeFiles/log4z.dir
-/root/sfup/build/sfu_core/CMakeFiles/sfu_core.dir
-/root/sfup/build/CMakeFiles/sfu_media.dir
-/root/sfup/build/CMakeFiles/sfu_signal_server.dir

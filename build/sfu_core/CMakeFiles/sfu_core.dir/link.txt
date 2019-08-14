@@ -1,1 +1,0 @@
-/usr/bin/c++  -fPIC -g -Wl,--rpath=./lib/ -m64 -Wall -o0 -g -ggdb -pthread -std=c++11 -fPIC -g   -shared -Wl,-soname,libsfu_core.so -o ../../out/libsfu_core.so CMakeFiles/sfu_core.dir/src/Logger.cpp.o  -L/root/sfup/lib  -L/usr/local/lib  -L/root/sfup/sfu_core/lib -lpthread -Wl,-rpath,/root/sfup/lib:/usr/local/lib:/root/sfup/sfu_core/lib 
