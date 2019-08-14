@@ -7,7 +7,11 @@
 #include <set>
 #include <streambuf>
 #include <string>
+#include "filenameio.h"
+#include "log4z.h"
+#include "configmanager.h"
 
+using namespace zsummer::log4z;
 /**
  * The telemetry server accepts connections and sends a message every second to
  * each client containing an integer count. This example can be used as the
@@ -178,16 +182,45 @@ int main(int argc, char* argv[]) {
 
     std::string docroot;
     uint16_t port = 9002;
+    ILog4zManager::getRef().setLoggerPath(LOG4Z_MAIN_LOGGER_ID, "./signal_log");
+    ILog4zManager::getRef().start();
+    ILog4zManager::getRef().setLoggerLevel(LOG4Z_MAIN_LOGGER_ID,LOG_LEVEL_TRACE);
+    LOGT("stream input *** " << "LOGT LOGT LOGT LOGT" << " *** ");
+    LOGD("stream input *** " << "LOGD LOGD LOGD LOGD" << " *** ");
+    LOGI("stream input *** " << "LOGI LOGI LOGI LOGI" << " *** ");
+    LOGW("stream input *** " << "LOGW LOGW LOGW LOGW" << " *** ");
+    
+    //read config.json
+    sfup::sfuputil::FileNameIO* fni = new sfup::sfuputil::FileNameIO();
+    if(fni->IsFileExist("sfu_signal.json")){
+	LOGI("signal config exist");
+    }
+    else{
+       LOGE("signal config not exist");
+       LOGE("You Can Usage: telemetry_server [documentroot] [port]");
+       return -1;
+    }
 
+    if(argc > 2)
+    {
+	sfup::sfuputil::ConfigManager* cm = new sfup::sfuputil::ConfigManager();
+	//std::tuple<int, int, vector<int>> tupleTest(1, 4, { 5,6,7,8 });
+	std::tuple<std::string, std::string, std::string, int> scport("signal-ip", "signal-port", argv[1], atoi(argv[2]));
+	cm->SignalConfigInserter("sfu_signal.json", scport);
+    }
+
+    //LOGE("stream input *** " << "LOGE LOGE LOGE LOGE" << " *** ");
+#if 0
     if (argc == 1) {
-        std::cout << "Usage: telemetry_server [documentroot] [port]" << std::endl;
+        LOGE("Usage: telemetry_server [documentroot] [port]");
+       //std::cout << "Usage: telemetry_server [documentroot] [port]" << std::endl;
         return 1;
     }
     
     if (argc >= 2) {
         docroot = std::string(argv[1]);
     }
-        
+   
     if (argc >= 3) {
         int i = atoi(argv[2]);
         if (i <= 0 || i > 65535) {
@@ -197,6 +230,7 @@ int main(int argc, char* argv[]) {
         
         port = uint16_t(i);
     }
+#endif     
 
     s.run(docroot, port);
     return 0;

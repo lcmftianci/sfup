@@ -14,7 +14,7 @@ INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
  
 SET(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/../out)
  
-INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/include/interface ${PROJECT_SOURCE_DIR}/include)
+INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/../third_party/jsoncpp/include ${PROJECT_SOURCE_DIR}/include)
  
 LINK_DIRECTORIES(${PROJECT_SOURCE_DIR}/lib  /usr/local/lib)
  
@@ -27,4 +27,4 @@ add_definitions(-g)
 
 ADD_LIBRARY(sfu_core SHARED ${SRC_LIST})
 
-TARGET_LINK_LIBRARIES(sfu_core pthread)
+TARGET_LINK_LIBRARIES(sfu_core pthread jsoncpp_lib)

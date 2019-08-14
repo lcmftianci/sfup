@@ -1,0 +1,7 @@
+2019-08-14 15:23:53.464 [7689] LOG_ALARM -----------------  log4z thread started!   ---------------------------- log4z.cpp:1923
+2019-08-14 15:23:53.464 [7689] LOG_ALARM logger id=0 key=Main name=Main path=./signal_log/ level=1 display=true log4z.cpp:1933
+2019-08-14 15:23:53.514 [7688] LOG_TRACE stream input *** LOGT LOGT LOGT LOGT ***  main.cpp:187
+2019-08-14 15:23:53.515 [7688] LOG_DEBUG stream input *** LOGD LOGD LOGD LOGD ***  main.cpp:188
+2019-08-14 15:23:53.515 [7688] LOG_INFO stream input *** LOGI LOGI LOGI LOGI ***  main.cpp:189
+2019-08-14 15:23:53.515 [7688] LOG_WARN stream input *** LOGW LOGW LOGW LOGW ***  main.cpp:190
+2019-08-14 15:23:53.515 [7688] LOG_INFO signal config exist main.cpp:195
