@@ -1,0 +1,1 @@
+/usr/bin/c++  -fPIC -g -Wl,--rpath=./lib/ -m64 -Wall -o0 -g -ggdb -pthread -std=c++11 -fPIC -g   -shared -Wl,-soname,liblog4z.so -o ../../../out/liblog4z.so CMakeFiles/log4z.dir/src/log4z.cpp.o  -L/root/sfup/lib  -L/usr/local/lib  -L/root/sfup/third_party/log4z/lib -lpthread -Wl,-rpath,/root/sfup/lib:/usr/local/lib:/root/sfup/third_party/log4z/lib 
