@@ -21,7 +21,7 @@ namespace sfup{
 				ConfigManager();
 				virtual	~ConfigManager();
 				
-				rettype SignalConfigParser(std::string strPath);
+				std::tuple<rettype, std::string, int> SignalConfigParser(std::string strPath);
 				
 				rettype SignalConfigInserter(std::string strPath, std::tuple<std::string, std::string, std::string, int> kv);
 				rettype SignalConfigSaver(std::string strPath, std::tuple<std::string, std::string, std::string> kv);

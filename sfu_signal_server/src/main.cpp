@@ -191,9 +191,15 @@ int main(int argc, char* argv[]) {
     LOGW("stream input *** " << "LOGW LOGW LOGW LOGW" << " *** ");
     
     //read config.json
+    sfup::sfuputil::ConfigManager* cm = new sfup::sfuputil::ConfigManager();
     sfup::sfuputil::FileNameIO* fni = new sfup::sfuputil::FileNameIO();
     if(fni->IsFileExist("sfu_signal.json")){
 	LOGI("signal config exist");
+	std::tuple<sfup::sfuputil::rettype, std::string, int> tuipport = cm->SignalConfigParser("sfu_signal.json");
+	docroot = std::get<1>(tuipport);
+	port = std::get<2>(tuipport);
+
+	LOGI("==>> port: " << port << " ip: " << docroot);
     }
     else{
        LOGE("signal config not exist");
@@ -203,7 +209,6 @@ int main(int argc, char* argv[]) {
 
     if(argc > 2)
     {
-	sfup::sfuputil::ConfigManager* cm = new sfup::sfuputil::ConfigManager();
 	//std::tuple<int, int, vector<int>> tupleTest(1, 4, { 5,6,7,8 });
 	std::tuple<std::string, std::string, std::string, int> scport("signal-ip", "signal-port", argv[1], atoi(argv[2]));
 	cm->SignalConfigInserter("sfu_signal.json", scport);

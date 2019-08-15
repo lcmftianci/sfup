@@ -19,9 +19,25 @@ ConfigManager::~ConfigManager(){
 
 }
 				
-rettype ConfigManager::SignalConfigParser(std::string strPath){
+std::tuple<rettype, string, int> ConfigManager::SignalConfigParser(std::string strPath){
+	
+	Json::Value root;
+	Json::Reader reader;
+	ifstream ifs(strPath, ios::binary);
+	if(!ifs.is_open())
+	{
+       	 	LOGW("signal config file, Open file error!");
+		tuple<rettype, string, int> rettuple(ret_error, "0.0.0.0", 9002);
+		return rettuple;
+	}
 
-	return ret_ok;
+	if (reader.parse(ifs, root))
+	{
+		tuple<rettype, string, int> rettuple(ret_ok, root["signal_ip"].asString(), root["signal_port"].asInt());
+		return rettuple;
+	}
+	tuple<rettype, string, int> rettuple(ret_error, "0.0.0.0", 9002);
+	return rettuple;
 }
 
 
@@ -36,10 +52,11 @@ rettype ConfigManager::SignalConfigInserter(std::string strPath, std::tuple<std:
  	fstream f;
     	f.open (strPath, ios::out);
     	if( !f.is_open() ){
-       	 	LOGW("Open file error!");
+       	 	LOGW("signal config file Open file error!");
     		//LOGD("stream input *** " << "LOGD LOGD LOGD LOGD" << " *** ");
    		//LOGI("stream input *** " << "LOGI LOGI LOGI LOGI" << " *** ");
     		//LOGW("stream input *** " << "LOGW LOGW LOGW LOGW" << " *** ");
+    		return ret_error;
    	}
     	f << root.toStyledString(); //转换为json格式并存到文件流
     	f.close();
