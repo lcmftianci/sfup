@@ -1,5 +1,6 @@
 #include <websocketpp/config/asio_no_tls.hpp>
-
+#include <websocketpp/config/asio_client.hpp>
+#include <websocketpp/client.hpp>
 #include <websocketpp/server.hpp>
 
 #include <fstream>
@@ -10,6 +11,7 @@
 #include "filenameio.h"
 #include "log4z.h"
 #include "configmanager.h"
+#include <map>
 
 using namespace zsummer::log4z;
 /**
@@ -36,6 +38,21 @@ class telemetry_server {
 public:
     typedef websocketpp::connection_hdl connection_hdl;
     typedef websocketpp::server<websocketpp::config::asio> server;
+    typedef websocketpp::config::asio_client::message_type::ptr message_ptr;
+    enum client_type{
+        client_media,
+        client_camera
+    };
+    typedef struct _client_hdl{
+	std::string m_name;
+	int         m_inx;
+	client_type m_type;
+	_client_hdl(){
+		m_name = "";
+		m_inx = 0;
+		m_type = client_camera;
+	}
+    }client_hdl;
 
     telemetry_server() : m_count(0) {
         // set up access channels to only log interesting things
@@ -48,10 +65,19 @@ public:
 
         // Bind the handlers we are using
         using websocketpp::lib::placeholders::_1;
+	using websocketpp::lib::placeholders::_2;
         using websocketpp::lib::bind;
         m_endpoint.set_open_handler(bind(&telemetry_server::on_open,this,_1));
         m_endpoint.set_close_handler(bind(&telemetry_server::on_close,this,_1));
         m_endpoint.set_http_handler(bind(&telemetry_server::on_http,this,_1));
+	m_endpoint.set_message_handler(bind(&telemetry_server::on_message, this, _1, _2));
+    }
+
+    void on_message(websocketpp::connection_hdl hdl, message_ptr msg)
+    {
+	//m_connections.find(hdl);
+	//解析msg, 判断发送给谁
+   	std::cout << "======>>>>> on_message called with hdl: " << hdl.lock().get() << " and message: " << msg->get_payload() << std::endl;
     }
 
     void run(std::string docroot, uint16_t port) {
@@ -92,13 +118,12 @@ public:
     void on_timer(websocketpp::lib::error_code const & ec) {
         if (ec) {
             // there was an error, stop telemetry
-            m_endpoint.get_alog().write(websocketpp::log::alevel::app,
-                    "Timer Error: "+ec.message());
+            m_endpoint.get_alog().write(websocketpp::log::alevel::app, "Timer Error: "+ec.message());
             return;
         }
         
         std::stringstream val;
-        val << "count is " << m_count++;
+        //LOGI("==> count is " << m_count++);
         
         // Broadcast count to all connections
         con_list::iterator it;
@@ -159,16 +184,24 @@ public:
 
     void on_open(connection_hdl hdl) {
         m_connections.insert(hdl);
+        //m_arrConnections.push_back(hdl);
+	client_hdl chdl;
+	m_mapConnections.insert(std::pair<connection_hdl, client_hdl>(hdl, chdl));
+	//m_mapConnections[hdl] = chdl;
+        LOGD("onopen ==> client count is " << m_mapConnections.size());
     }
 
     void on_close(connection_hdl hdl) {
         m_connections.erase(hdl);
+	m_mapConnections.erase(hdl);
+        LOGD("onclose ==> client count is " << m_mapConnections.size());
     }
 private:
     typedef std::set<connection_hdl,std::owner_less<connection_hdl>> con_list;
-    
     server m_endpoint;
     con_list m_connections;
+    //std::vector<connection_hdl> m_arrConnections;
+    std::map<websocketpp::connection_hdl, client_hdl, std::owner_less<connection_hdl>> m_mapConnections;
     server::timer_ptr m_timer;
     
     std::string m_docroot;
