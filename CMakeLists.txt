@@ -43,5 +43,5 @@ add_custom_command(TARGET  sfu_signal_server
 		COMMAND cp ${PROJECT_SOURCE_DIR}/sfu_signal_server/sfu_signal.json ${PROJECT_SOURCE_DIR}/out/)
 		
 #TARGET_LINK_LIBRARIES(sfu_media sfu_core log4z)
-TARGET_LINK_LIBRARIES(sfu_media sfu_core log4z)
+TARGET_LINK_LIBRARIES(sfu_media sfu_core log4z boost_system ssl crypto)
 TARGET_LINK_LIBRARIES(sfu_signal_server sfu_core log4z boost_date_time boost_system boost_filesystem boost_thread boost_random boost_wserialization ssl crypto jsoncpp_lib)

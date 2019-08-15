@@ -23,7 +23,7 @@ using namespace zsummer::log4z;
 typedef struct _audioinfo
 {
 	size_t nSize;
-	BYTE*  pBuffer;
+	unsigned char*  pBuffer;
 	_audioinfo() {
 		nSize = 0;
 	}
@@ -87,7 +87,7 @@ std::string UTF8ToGBK(const std::string& strUTF8)
 }
 #endif
 
-std::string utf8togbk(const char* src, size_t srclen)
+std::string utf8togbk(char* src, size_t srclen)
 {
 	iconv_t cd = iconv_open("UTF-8", "GB2312");
 
@@ -238,9 +238,9 @@ public:
 	//************************************
 	void on_message(websocketpp::connection_hdl, message_ptr msg)
 	{
-		//std::cout << "======>>>>> on_message called with hdl: " << m_hdl.lock().get() << " and message: " << msg->get_payload() << std::endl;
+		std::cout << "======>>>>> on_message called with hdl: " << m_hdl.lock().get() << " and message: " << msg->get_payload() << std::endl;
 		//std::cout << utf8togbk(msg->get_payload().c_str(), msg->get_payload().length()).c_str() << std::endl;
-		std::cout << UTF8ToGBK(msg->get_payload().c_str()) << std::endl;
+		//std::cout << UTF8ToGBK(msg->get_payload().c_str()) << std::endl;
 		
 		//websocketpp::lib::error_code ec;
 	
@@ -298,7 +298,7 @@ public:
 		m_done = true;
 	}
 
-	int WebSocketSend(BYTE* buf, size_t si)
+	int WebSocketSend(unsigned char* buf, size_t si)
 	{
 		websocketpp::lib::error_code ec;
 		int ret = si;
@@ -332,11 +332,10 @@ public:
 				sen += ret;
 				std::cout << "get:" << sen << " sizeof:" << sizeof(buffer) << " size:" << ret << std::endl;
 			}
-			Sleep(50);
+			usleep(50000);
 		}
 		return 0;
 	}
-
 	//************************************
 	// Method:    telemetry_loop
 	// FullName:  telemetry_client::telemetry_loop
@@ -370,6 +369,7 @@ public:
 				wait_a_bit();
 				continue;
 			}
+			count++;
 
 #if 0
 			val.str("");
@@ -585,16 +585,19 @@ int main(int argc, char* argv[]) {
 	LOGA("stream input *** " << "LOGA LOGA LOGA LOGA" << " *** ");
 	LOGF("stream input *** " << "LOGF LOGF LOGF LOGF" << " *** ");
 
-	std::string params = "?from=zh-CN";
 	//std::string header = "{ \'Content-type\': \'audio/wav; samplerate=16000\', \'ApiKey\' : \'0ffec4da189baadb6458550ef2151e2a\' }";
-	std::string url = "wss://api.open.newtranx.com/speech-api/v3/recognize" + params;
+	
+	//std::string params = "?from=zh-CN";
+	//std::string url = "wss://api.open.newtranx.com/speech-api/v3/recognize" + params;
+	
 	//websocket.connect(url, header = header)
 	//std::string uri = "wss://39.106.13.209:3306/ws";
+	std::string url = "ws://39.106.13.209:9002";
 	std::string uri = url;
 
 	if (argc == 2) {
 		uri = argv[1];
 	}
-	std::thread ti(OpenAudioDevice);
+	//std::thread ti(OpenAudioDevice);
 	c.run(uri);
 }
