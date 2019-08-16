@@ -229,10 +229,15 @@ int main(int argc, char* argv[]) {
     if(fni->IsFileExist("sfu_signal.json")){
 	LOGI("signal config exist");
 	std::tuple<sfup::sfuputil::rettype, std::string, int> tuipport = cm->SignalConfigParser("sfu_signal.json");
-	docroot = std::get<1>(tuipport);
-	port = std::get<2>(tuipport);
-
-	LOGI("==>> port: " << port << " ip: " << docroot);
+	if(sfup::sfuputil::ret_ok == std::get<0>(tuipport))
+	{
+		docroot = std::get<1>(tuipport);
+		port = std::get<2>(tuipport);
+	}
+	else
+	{
+		LOGE("read ip and port failed!");
+	}
     }
     else{
        LOGE("signal config not exist");
@@ -245,7 +250,10 @@ int main(int argc, char* argv[]) {
 	//std::tuple<int, int, vector<int>> tupleTest(1, 4, { 5,6,7,8 });
 	std::tuple<std::string, std::string, std::string, int> scport("signal-ip", "signal-port", argv[1], atoi(argv[2]));
 	cm->SignalConfigInserter("sfu_signal.json", scport);
+	docroot = argv[1];
+	port = atoi(argv[2]);
     }
+    LOGI("==>> port: " << port << " ip: " << docroot);
 
     //LOGE("stream input *** " << "LOGE LOGE LOGE LOGE" << " *** ");
 #if 0

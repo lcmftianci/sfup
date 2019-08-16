@@ -3,6 +3,10 @@ cmake_minimum_required(VERSION 2.8)
  
 PROJECT (sfup)
 
+set (sfup_VERSION_MAJOR 0)
+set (sfup_VERSION_MINOR 1)
+set (sfup_VERSION_PATCH 1)
+
 option(BUILD_SIGNAL_SERVER "Build jsoncpp_lib as a shared library." OFF)
  
 SET(CMAKE_BUILD_TYPE "Debug")

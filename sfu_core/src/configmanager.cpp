@@ -33,8 +33,16 @@ std::tuple<rettype, string, int> ConfigManager::SignalConfigParser(std::string s
 
 	if (reader.parse(ifs, root))
 	{
-		tuple<rettype, string, int> rettuple(ret_ok, root["signal_ip"].asString(), root["signal_port"].asInt());
-		return rettuple;
+		if(root.isMember("signal-ip")&&root.isMember("signal-port"))
+		{
+			tuple<rettype, string, int> rettuple(ret_ok, root["signal-ip"].asString(), root["signal-port"].asInt());
+			return rettuple;
+		}
+		else
+		{
+			tuple<rettype, string, int> rettuple(ret_error, "0.0.0.0", 9002);
+			return rettuple;
+		}
 	}
 	tuple<rettype, string, int> rettuple(ret_error, "0.0.0.0", 9002);
 	return rettuple;
