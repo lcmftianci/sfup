@@ -32,10 +32,10 @@ libraries =  ;
 
 # These settings are equivivalent to corresponding command-line
 # options.
-option.set prefix : /usr/local ;
-option.set exec-prefix : /usr/local ;
-option.set libdir : /usr/local/lib ;
-option.set includedir : /usr/local/include ;
+option.set prefix : /home/build/MediaServer/sfup/out/boost/ ;
+option.set exec-prefix : /home/build/MediaServer/sfup/out/boost/ ;
+option.set libdir : /home/build/MediaServer/sfup/out/boost//lib ;
+option.set includedir : /home/build/MediaServer/sfup/out/boost//include ;
 
 # Stop on first error
 option.set keep-going : false ;
