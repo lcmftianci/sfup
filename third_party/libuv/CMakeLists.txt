@@ -2,6 +2,9 @@
 cmake_minimum_required(VERSION 3.0)
 project(libuv)
 
+SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/../../out)
+SET(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/../../out)
+
 if(MSVC)
   list(APPEND uv_cflags /W4)
 elseif(CMAKE_C_COMPILER_ID MATCHES "AppleClang|Clang|GNU")
@@ -9,6 +12,7 @@ elseif(CMAKE_C_COMPILER_ID MATCHES "AppleClang|Clang|GNU")
   list(APPEND uv_cflags -Wall -Wextra -Wstrict-prototypes)
   list(APPEND uv_cflags -Wno-unused-parameter)
 endif()
+
 
 set(uv_sources
     src/fs-poll.c
