@@ -592,7 +592,7 @@ int main(int argc, char* argv[]) {
 	
 	//websocket.connect(url, header = header)
 	//std::string uri = "wss://39.106.13.209:3306/ws";
-	std::string url = "ws://39.106.13.209:9002";
+	std::string url = "ws://0.0.0.0:9002";
 	std::string uri = url;
 
 	if (argc == 2) {

@@ -78,5 +78,6 @@ endif()
 TARGET_LINK_LIBRARIES(sfu_media sfu_core log4z boost_system ssl crypto)
 
 if(BUILD_SIGNAL_SERVER)
-TARGET_LINK_LIBRARIES(sfu_signal_server sfu_core log4z boost_date_time boost_system boost_filesystem boost_thread boost_random boost_wserialization ssl crypto jsoncpp_lib)
+#TARGET_LINK_LIBRARIES(sfu_signal_server sfu_core log4z boost_date_time boost_system boost_filesystem boost_thread boost_random boost_wserialization ssl crypto jsoncpp_lib)
+TARGET_LINK_LIBRARIES(sfu_signal_server sfu_core log4z boost_system ssl crypto jsoncpp_lib)
 endif()
